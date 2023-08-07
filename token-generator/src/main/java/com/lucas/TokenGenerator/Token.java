@@ -4,8 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static java.lang.String.valueOf;
-
+/**
+ * Clase Token.
+ *
+ * <p>Genera cadena de caracteres random para crear token de autentificacion.</p>
+ *
+ * @author Lucas Villalba
+ * @version 1.0
+ */
 public class Token implements TokenGeneratorInterface {
     private final static int MAX_LENGTH = 100;
     private final static int MIN_LENGTH = 10;
@@ -15,14 +21,19 @@ public class Token implements TokenGeneratorInterface {
     private List<Character> simbols = new ArrayList<>();
 
     public String token = "";
-
     public static void main(String[] args) {
-
-        Token token = new Token(50);
-        System.out.printf("Token: %s \nToken2: %s \nToken size: %d", token.generateToken(),token.generateToken(), token.length);
+        Token token = new Token();
+        System.out.println("Old simbols: "+token.getSimbols());
+        token.addSimbols('<', '>', 'ñ');
+        System.out.println("new simbols: "+token.getSimbols());
+        
+        token.setSimbol('ñ', 'º');
+        System.out.println("simbols: "+token.getSimbols());
     }
+
+
     /**
-     * Crea una clase Token con un tamaño minimo poe defecto de token a generar <strong>MIN_LENGTH</strong>
+     * Crea una clase Token con un tamaño minimo de token a generar por defecto <b>MIN_LENGTH</b>
      */
     public Token(){
         createSombols();
@@ -38,10 +49,19 @@ public class Token implements TokenGeneratorInterface {
         setSizeToken(size);
     }
 
+    /**
+     * Los <b>simbolos</b> utilizados por defecto son los valores 65 al 126 en la tabla
+     * <a href="https://elcodigoascii.com.ar/codigos-ascii/signo-numeral-almohadilla-codigo-ascii-35.html">ASCII</a>
+     * @return Lista de <b>simbols</b> que utilizapara generar los tokens.
+     */
     public List<Character> getSimbols(){
         return simbols;
     }
 
+    /** Metodo que genera una cadena de caracteres random comprendida entre los valores 65 y 126 en tabla 
+     * <a href="https://elcodigoascii.com.ar/codigos-ascii/signo-numeral-almohadilla-codigo-ascii-35.html">ASCII</a> por defecto para el valor de una token.
+     * @return String con una combinacion de caracteres random.
+     */
     @Override
     public String generateToken() {
         token = "";
@@ -51,49 +71,68 @@ public class Token implements TokenGeneratorInterface {
         return token;
     }
 
-    private String randomStr(){
-        // int length = rand.nextInt(2,5);
-        String string = "";
-
-        for(int i=0; i<length; i++){
-            if(rand.nextBoolean())
-                string = string.concat(valueOf((char)rand.nextInt(65,90)));
-            else
-                string = string.concat(valueOf((char)rand.nextInt(97,122)));
-            string = string.concat(valueOf(rand.nextInt(101)));
-        }
-        return string;
-    }
-
-
-
+    /**
+     * Formatea la longitud que tendran los tokens cuando estos se generen aleatoriamente.
+     * <p>El valor comprendido no podra ser menor al minimo como tampoco mayor al maximo ya preestablecido por defecto <b>10<=size<=100</b>.</p>
+     * @param size valor entero que  indicara la longitud del token.
+     */
     @Override
-    public void setSizeToken(int size) {
+    public Token setSizeToken(int size) {
         if(size < MIN_LENGTH) length = MIN_LENGTH;
         if(size > MAX_LENGTH) length = MAX_LENGTH;
         if(size>= MIN_LENGTH && size<= MAX_LENGTH) length = size;
+        return this;
     }
 
+    /** Longitud que tendran los tokens que se generaran
+     * @return <b>int</b> valor entero.
+     */
     @Override
-    public int sizeToken() {
-        return token.length();
+    public int size() {
+        return length;
     }
 
+    /**
+     * Agrega o añade un caracter que utilizara para generar la cadena final de tokens.
+     * @param simbol hace referencia a un nuevo simbolo de tipo <b>char</b>.
+     */
     @Override
     public void addSimbol(char simbol) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addSimbol'");
+        if(simbols.contains(simbol)) return;
+        simbols.add(simbol);
     }
 
+
+    @Override
+    public void addSimbols(char... args) {
+        for(char c: args){
+            if(simbols.contains(c)) continue;
+            simbols.add(c);
+        }
+    } 
+
+    /**
+     * Modifica un simbolo o caracter en la lista de simbolos que utiliza la clase Token para crear una cadena de caracteres "token" aleatorio.
+     * @param simbol hace referencia al caracter ya incluido en la lista y quiera reemplazar.
+     * @param newSimbol se refiere al nuevo simbolo tipo <b>char</b> que quiera incluir.
+     */
     @Override
     public void setSimbol(char simbol, char newSimbol) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setSimbol'");
+        
+        try {
+            if(simbols.contains(newSimbol)) return;
+            simbols.remove( simbols.indexOf(simbol));
+            simbols.add(newSimbol);
+        }
+        catch (Exception e) {
+            System.out.printf("Error al settear el caracter '%c' \nException: %s", newSimbol, e.toString() );
+        }
     }
 
     private void createSombols(){
         for(int i=65; i<127; i++){
             simbols.add((char)i);    
         }
-    } 
+    }
+
 }
