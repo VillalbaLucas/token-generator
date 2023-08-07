@@ -23,17 +23,17 @@ public class Token implements TokenGeneratorInterface {
     public String token = "";
     public static void main(String[] args) {
         Token token = new Token();
-        System.out.println("Old simbols: "+token.getSimbols());
-        token.addSimbols('<', '>', 'ñ');
-        System.out.println("new simbols: "+token.getSimbols());
+        // System.out.println("Old simbols: "+token.getSimbols());
+        // token.addSimbols('<', '>', 'ñ');
+        // System.out.println("new simbols: "+token.getSimbols());
         
-        token.setSimbol('ñ', 'º');
-        System.out.println("simbols: "+token.getSimbols());
+        // token.setSimbol('ñ', 'º');
+        // System.out.println("simbols: "+token.getSimbols());
     }
 
 
     /**
-     * Crea una clase Token con un tamaño minimo de token a generar por defecto <b>MIN_LENGTH</b>
+     * Crea una clase Token con un tamaño minimo de token  por defecto <b>size=10</b>
      */
     public Token(){
         createSombols();
@@ -41,7 +41,7 @@ public class Token implements TokenGeneratorInterface {
     }
 
     /**
-     * Construye una clase Token con un tamaño especifico de los token que generara.
+     * Crea una clase Token con un tamaño especifico de los token que generara.
      * @param size Valores comprendidos entre un minimo de 10 y maximo de 100 por defecto. 
      */
     public Token(int size){
@@ -66,7 +66,8 @@ public class Token implements TokenGeneratorInterface {
     public String generateToken() {
         token = "";
         for(int i=0; i<length; i++){
-            token = token.concat( String.valueOf(simbols.get(rand.nextInt(simbols.size()))));
+            token = token.concat(
+                String.valueOf(simbols.get(rand.nextInt(simbols.size()))));
         }
         return token;
     }
