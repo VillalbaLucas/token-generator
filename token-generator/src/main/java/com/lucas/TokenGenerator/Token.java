@@ -21,16 +21,6 @@ public class Token implements TokenGeneratorInterface {
     private List<Character> simbols = new ArrayList<>();
 
     public String token = "";
-    public static void main(String[] args) {
-        Token token = new Token();
-        // System.out.println("Old simbols: "+token.getSimbols());
-        // token.addSimbols('<', '>', 'ñ');
-        // System.out.println("new simbols: "+token.getSimbols());
-        
-        // token.setSimbol('ñ', 'º');
-        // System.out.println("simbols: "+token.getSimbols());
-    }
-
 
     /**
      * Crea una clase Token con un tamaño minimo de token  por defecto <b>size=10</b>
@@ -102,7 +92,6 @@ public class Token implements TokenGeneratorInterface {
         if(simbols.contains(simbol)) return;
         simbols.add(simbol);
     }
-
 
     @Override
     public void addSimbols(char... args) {
